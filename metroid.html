@@ -1,13 +1,44 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Metroid — EECS 494 P1 Gold | Zach Gillespie</title>
-<meta name="description" content="Zach Gillespie's EECS 494 Metroid project: classic and custom levels, personal contributions, and Windows/Mac downloads.">
+<title>Swap Courier &amp; Metroid — Unity Games | Zach Gillespie</title>
+<meta name="description" content="Zach Gillespie's Unity games: Swap Courier (P2 Gold) and Metroid (P1 Gold), with screenshots, contributions, controls, and Windows/Mac downloads.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="style.css"></head>
 <body><a class="skip" href="#main">Skip to content</a><header class="site-header"><div class="nav-wrap"><a class="brand" href="index.html" aria-label="Zach Gillespie home"><span class="monogram">ZG<span>.</span></span><span>Zach Gillespie<small>SOFTWARE ENGINEERING</small></span></a><nav aria-label="Main navigation"><a href="index.html">About</a><a href="projects.html">Projects</a><a href="triageflow.html">TriageFlow</a><a href="mgvc.html">MGVC Decoder</a><a href="march-madness.html">Bracket Optimizer</a><a href="resume.html">Résumé</a></nav></div></header>
 <main id="main">
-<section class="case-intro wrap"><a class="back" href="projects.html">← All projects</a>
+<section class="case-intro wrap">
+<a class="back" href="projects.html">← All projects</a>
+<p class="eyebrow">UNITY GAMES / EECS 494 · UNIVERSITY OF MICHIGAN</p>
+<h1>Small worlds.<br><span class="muted">Playful ideas.</span></h1>
+<p class="lead prose">Two game projects by Zach Gillespie: an original garden delivery puzzle and a recreation of classic Metroid with a custom grappling level.</p>
+<div class="hero-actions"><a class="button primary" href="#swap-courier">Swap Courier · P2 ↓</a><a class="button" href="#metroid">Metroid · P1 ↓</a></div>
+</section>
+<section class="case-section wrap" id="swap-courier">
+<p class="eyebrow">EECS 494 / P2 GOLD · ORIGINAL PUZZLE GAME</p>
+<h2 style="font-size:clamp(2.4rem,5vw,4rem)">Swap Courier</h2>
+<p class="lead prose">A little frog. A special parcel. A change of place.</p>
+<p class="prose">Walk, push, and trade places with a ribboned parcel along a clear row or column. Deliver it to the doorstep, then find your own way home. Twelve compact puzzles turn a simple exchange into a game about positioning, staging, and leaving yourself a route out.</p>
+<p><strong>By Zach Gillespie</strong> · Individual coursework project</p>
+<div class="tags"><span>Unity 6</span><span>C#</span><span>2D puzzles</span><span>URP</span></div>
+<div class="hero-actions" style="margin-top:28px"><a class="button primary" href="https://github.com/Zachgille/portfolio/releases/download/p2-gold/SwapCourierP2Gold-Windows-Mac.zip">Download Swap Courier · Windows + Mac ZIP ↓</a></div>
+<p class="prose" style="margin-top:18px;color:var(--muted)">Windows 64-bit and Mac players · No timers or lives · Unlimited undo</p>
+<figure class="wide-visual" style="padding:0;overflow:hidden"><img src="assets/swap-courier-gameplay.webp" alt="Swap Courier's final garden puzzle, with a frog courier, ribboned parcel, hedge paths, an open trellis, delivery mat, and exit" width="1600" height="900" style="max-width:none;width:100%;display:block"><figcaption style="padding:16px 22px">Home by Sundown, the final stop. An open trellis blocks walking and pushing while allowing a position swap through its window.</figcaption></figure>
+</section>
+<section class="case-section wrap two-columns">
+<div><p class="eyebrow">MY CONTRIBUTIONS</p><h2>From rule to route</h2><p class="prose">I developed the game concept and shaped the puzzle progression, controls, interface, and garden presentation. I worked on the swapping and delivery systems, level layouts, saved progress, hints, audio, and overall polish, using OpenAI Codex for implementation and testing assistance and GPT Images for the original artwork.</p></div>
+<div><p class="eyebrow">TECHNOLOGY</p><h2>A compact Unity game</h2><p class="prose">Built in Unity 6 (6000.3.23f1) with C#, the Universal 2D Render Pipeline, the Input System, and a Canvas-based interface. A small grid model drives movement, pushing, sightline swaps, and undo. Progress and best records save locally; music, ambience, and effects are synthesized in game.</p></div>
+</section>
+<section class="case-section wrap two-columns">
+<div><p class="eyebrow">THE DELIVERY ROUTE</p><h2>Twelve small discoveries</h2><p class="prose">Three chapters move from the Post Office Yard through Garden Lanes to Greenhouse Windows. The stamp book lets you return to unlocked deliveries and improve your records. Each room has two optional hints and a little thank-you from its recipient.</p><figure style="margin:24px 0 0"><img src="assets/swap-courier-route.webp" alt="The stamp book showing three chapters of four deliveries, beginning with Special Delivery and Wrong Side" width="1600" height="900" loading="lazy" style="width:100%;border:1px solid var(--line)"></figure></div>
+<div class="evidence-box"><p class="eyebrow">KEYBOARD CONTROLS</p><ul class="clean-list"><li><strong>Arrow keys / WASD</strong> — walk and push</li><li><strong>Space</strong> — swap; advance after a completed delivery</li><li><strong>Z / Backspace</strong> — undo</li><li><strong>R</strong> — restart the current delivery</li><li><strong>H</strong> — reveal the observation hint, then the strategy hint</li><li><strong>Escape</strong> — pause / return</li><li><strong>Tab / Shift+Tab, Enter</strong> — select and activate menu controls</li></ul><p class="prose" style="font-size:14px;margin-top:24px">Mouse buttons are also available. Music/garden and effects volumes can be adjusted separately in Settings.</p></div>
+</section>
+<section class="case-section wrap two-columns">
+<div><p class="eyebrow">PLAY</p><h2>Start your first delivery</h2><ol><li>Download and extract the Swap Courier ZIP.</li><li>Windows: open <code>Windows/SwapCourier.exe</code>, keeping the accompanying folders and files beside it.</li><li>Mac: open <code>Mac/SwapCourier.app</code>.</li><li>Choose <strong>Start Delivery</strong>. Bring the parcel to <strong>D</strong>, then move the frog to <strong>EXIT</strong>.</li></ol><p class="prose">The Mac bundle is provided but has not been launch-tested on macOS.</p></div>
+<div><p class="eyebrow">CREDITS</p><h2>The Little Garden Post</h2><p class="prose">Original garden illustrations generated with OpenAI GPT Images. Gameplay, interface, puzzles, and original synthesized audio developed with Codex assistance. The game also uses the EECS 494 course EventBus and Unity TextMeshPro resources. Full credits are included in the download.</p><a class="text-link" href="#metroid">Also on this page: Metroid · P1 Gold ↓</a></div>
+</section>
+
+<section class="case-section wrap" id="metroid">
 <p class="eyebrow">EECS 494 / P1 GOLD · UNIVERSITY OF MICHIGAN</p>
-<h1>Metroid</h1><p class="lead prose">A Unity recreation of classic Metroid with a separate custom level built around a grappling mechanic. Both levels are included in the same game download.</p>
+<h2 style="font-size:clamp(2.4rem,5vw,4rem)">Metroid</h2><p class="lead prose">A Unity recreation of classic Metroid with a separate custom level built around a grappling mechanic. Both levels are included in the same game download.</p>
 <p><strong>By Zach Gillespie</strong> · Team coursework project</p>
 <div class="tags"><span>Unity 6</span><span>C#</span><span>2D sprites</span><span>URP</span></div>
 <div class="hero-actions" style="margin-top:28px"><a class="button primary" href="https://github.com/Zachgille/portfolio/releases/download/p1-gold/MetroidP1Gold-Windows-Mac.zip">Download Windows + Mac ZIP ↓</a></div>
