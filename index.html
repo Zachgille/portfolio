@@ -53,33 +53,6 @@
 
     <article class="project">
       <div>
-        <h3 class="project__name"><a href="lumaire.html">Lumaire</a></h3>
-        <p class="project__kind">Android TV client · Kotlin, Jetpack Compose, Room</p>
-        <div class="project__body">
-          <p>A media client built for a television and a directional remote. The Movies and Series screens open with sixteen genre shelves, and each shelf used to run its own query, repeating the same work. Now they share one candidate set inside SQLite.</p>
-        </div>
-        <p class="project__links"><a href="lumaire.html">Case study</a><a href="https://github.com/Zachgille/AtlasTV">Source</a></p>
-      </div>
-      <figure class="fig">
-        <div class="fig__plate">
-          <div class="bars" style="--max-v:1400" role="img" aria-label="Median shelf query time: 1,232 milliseconds with sixteen separate queries, 745 milliseconds with one shared candidate set.">
-            <div class="bars__row">
-              <div class="bars__label"><span>Sixteen separate queries</span><span class="num">1,232 ms</span></div>
-              <div class="bars__track"><div class="bars__bar" style="--v:1232"></div></div>
-            </div>
-            <div class="bars__row is-after">
-              <div class="bars__label"><span>One shared candidate set</span><span class="num">745 ms</span></div>
-              <div class="bars__track"><div class="bars__bar" style="--v:745"></div></div>
-            </div>
-            <div class="bars__axis" aria-hidden="true"><span style="--t:0">0</span><span style="--t:500">500</span><span style="--t:1000">1,000 ms</span></div>
-          </div>
-        </div>
-        <figcaption>Median time to fill all sixteen shelves, from three paired runs on an Onn TV box. Both versions return the same titles in the same order.</figcaption>
-      </figure>
-    </article>
-
-    <article class="project">
-      <div>
         <h3 class="project__name"><a href="triageflow.html">TriageFlow</a></h3>
         <p class="project__kind">Multi-tenant support desk · TypeScript, NestJS, PostgreSQL</p>
         <div class="project__body">
@@ -104,6 +77,33 @@ Execution Time: 0.142 ms</pre>
           </div>
         </div>
         <figcaption><code>EXPLAIN ANALYZE</code> excerpts for one tenant’s ticket queue. Under a five-minute k6 load test, p95 latency for the endpoint fell from 42.0 ms to 17.6 ms.</figcaption>
+      </figure>
+    </article>
+
+    <article class="project">
+      <div>
+        <h3 class="project__name"><a href="lumaire.html">Lumaire</a></h3>
+        <p class="project__kind">Android TV client · Kotlin, Jetpack Compose, Room</p>
+        <div class="project__body">
+          <p>A media client built for a television and a directional remote. The Movies and Series screens open with sixteen genre shelves, and each shelf used to run its own query, repeating the same work. Now they share one candidate set inside SQLite.</p>
+        </div>
+        <p class="project__links"><a href="lumaire.html">Case study</a><a href="https://github.com/Zachgille/AtlasTV">Source</a></p>
+      </div>
+      <figure class="fig">
+        <div class="fig__plate">
+          <div class="bars" style="--max-v:1400" role="img" aria-label="Median shelf query time: 1,232 milliseconds with sixteen separate queries, 745 milliseconds with one shared candidate set.">
+            <div class="bars__row">
+              <div class="bars__label"><span>Sixteen separate queries</span><span class="num">1,232 ms</span></div>
+              <div class="bars__track"><div class="bars__bar" style="--v:1232"></div></div>
+            </div>
+            <div class="bars__row is-after">
+              <div class="bars__label"><span>One shared candidate set</span><span class="num">745 ms</span></div>
+              <div class="bars__track"><div class="bars__bar" style="--v:745"></div></div>
+            </div>
+            <div class="bars__axis" aria-hidden="true"><span style="--t:0">0</span><span style="--t:500">500</span><span style="--t:1000">1,000 ms</span></div>
+          </div>
+        </div>
+        <figcaption>Median time to fill all sixteen shelves, from three paired runs on an Onn TV box. Both versions return the same titles in the same order.</figcaption>
       </figure>
     </article>
 
