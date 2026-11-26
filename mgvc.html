@@ -1,11 +1,128 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Panasonic MGVC Decoder | Zach Gillespie</title><meta name="description" content="Reverse engineering a proprietary Panasonic video format through stream mapping, residual reconstruction, and sample validation.">
-<meta name="theme-color" content="#101419"><link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="edition.css"><script src="script.js" defer></script><noscript><style>.step-panel[hidden]{display:block!important}.step-grid{display:none}.step-panel+.step-panel{margin-top:24px}</style></noscript></head>
-<body><a class="skip" href="#main">Skip to content</a><header class="site-header"><div class="nav-wrap"><a class="wordmark" href="index.html">ZG<span>/</span></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="atlas.html">AtlasTV</a><a href="metroid.html">Games</a><a href="resume.html">Résumé</a></nav></div></header>
-<main id="main"><section class="case-intro wrap"><a class="back" href="projects.html">← All projects</a><p class="eyebrow">CASE STUDY / 02</p><h1>Panasonic<br>MGVC Decoder</h1><p class="lead prose">Working through a poorly documented video format to recover its encoded 12-bit picture information and target a conventional playback format.</p><div class="tags"><span>Reverse engineering</span><span>Binary / stream processing</span><span>MVC / H.264</span><span>Video reconstruction</span></div></section>
-<section class="wrap"><div class="metrics"><div><strong>12-bit</strong><span>4:2:0 reconstruction goal</span></div><div><strong>1920 × 1080</strong><span>target frame dimensions</span></div><div><strong>23.976 fps</strong><span>target frame rate</span></div></div></section>
-<section class="case-section wrap"><p class="eyebrow">RECONSTRUCTION PIPELINE</p><h2>Two sources of information.<br>One reconstructed picture.</h2><figure class="wide-visual"><img src="mgvc.svg" width="640" height="330" alt="AVC base samples and MGVC enhancement information feed residual reconstruction, which targets conventional 12-bit output"><figcaption>Conceptual reconstruction path. Enhancement information contributes to sample reconstruction; it is not an upscale.</figcaption></figure><div class="explorer" data-explorer><div class="step-grid" aria-label="Reconstruction components"><button type="button" class="step" aria-pressed="true" aria-controls="Reconstruction-0" data-step="0"><span>01</span><strong>Map</strong><small>EDL.bin</small></button><button type="button" class="step" aria-pressed="false" aria-controls="Reconstruction-1" data-step="1"><span>02</span><strong>Inspect</strong><small>AVC + enhancement</small></button><button type="button" class="step" aria-pressed="false" aria-controls="Reconstruction-2" data-step="2"><span>03</span><strong>Reconstruct</strong><small>Residual information</small></button><button type="button" class="step" aria-pressed="false" aria-controls="Reconstruction-3" data-step="3"><span>04</span><strong>Validate</strong><small>12-bit 4:2:0</small></button></div><div class="step-content" aria-live="polite"><section id="Reconstruction-0" class="step-panel"><p class="eyebrow">01 / Map</p><h3>Recover the virtual stream layout.</h3><p class="prose">Work began from a decrypted Blu-ray ISO of Panasonic VWBS-1531. Parsing EDL.bin and its virtual mapping was part of reconstructing the base and enhancement streams presented by the disc format.</p></section><section id="Reconstruction-1" class="step-panel" hidden><p class="eyebrow">02 / Inspect</p><h3>Read beyond the base picture.</h3><p class="prose">The investigation examined virtual MVC/H.264 streams and MGVC SEI/data structures. The AVC base provides only part of the information required for the intended reconstruction.</p></section><section id="Reconstruction-2" class="step-panel" hidden><p class="eyebrow">03 / Reconstruct</p><h3>Account for the lossy base encode.</h3><p class="prose">Panasonic patent US9392246B2 informed the residual reconstruction process, including compensation for errors introduced by the lossy base encode. The goal is to reconstruct encoded sample information, not fabricate additional image detail.</p></section><section id="Reconstruction-3" class="step-panel" hidden><p class="eyebrow">04 / Validate</p><h3>Check samples before packaging.</h3><p class="prose">The work includes validation of reconstructed samples. The intended delivery format is 1920 × 1080, 23.976 fps Main12 HEVC in MKV, preserving original SDR colorimetry, audio, subtitles, and chapters. End-to-end output completion is not claimed here.</p></section></div></div></section>
-<section class="case-section wrap two-columns"><div><p class="eyebrow">CONTEXT</p><h2>Make an unfamiliar<br>format legible.</h2><p class="prose">The source was Panasonic’s Japanese Blu-ray of <em>The Wind Rises</em>, release VWBS-1531. Its proprietary MGVC video combines AVC base video with enhancement data. The project explored how those pieces fit together and how to reconstruct 12-bit 4:2:0 samples.</p><p class="prose">The hard part was not selecting an output codec. It was understanding virtual mapping, stream structure, and the meaning of enhancement information well enough to reconstruct the intended video.</p></div><div><p class="eyebrow">TECHNICAL APPROACH</p><h2>Follow the structure,<br>then check the samples.</h2><p class="prose">I worked with EDL.bin, virtual MVC/H.264 base and enhancement streams, and MGVC SEI/data structures. Panasonic patent US9392246B2 supplied context for the residual reconstruction process and compensation for lossy base-encode errors.</p><p class="prose">That separates reconstruction from increasing bit depth by simple conversion. The objective is to use information carried in the source to recover samples, rather than upscale an image or invent detail.</p></div></section>
-<section class="case-section wrap two-columns"><div class="evidence-box"><p class="eyebrow">DELIVERY TARGET</p><h3>A conventional container,<br>with the source’s characteristics.</h3><ul class="clean-list"><li>Main12 HEVC video in an MKV container</li><li>1920 × 1080 at 23.976 fps</li><li>Original SDR and colorimetry preserved</li><li>Disc audio, subtitles, and chapters retained</li></ul><p class="prose">These are the intended output requirements. The project account supports reconstruction work and sample validation, but does not establish a completed, fully validated end-to-end encode.</p></div><div><p class="eyebrow">WHAT THIS WORK SHOWS</p><h2>Debugging without<br>a familiar abstraction.</h2><p class="prose">This project required moving between binary structures, virtual stream layouts, patent descriptions, and decoded samples. It demonstrates how I investigate unfamiliar systems and distinguish a plausible interpretation from an output that has actually been validated.</p><div class="source-note"><h3>Reference &amp; scope</h3><p class="prose">Project details are drawn from my project notes. No disc content or decoder source is distributed on this site.</p><a href="https://patents.google.com/patent/US9392246B2/en">Panasonic patent US9392246B2 ↗</a></div></div></section><section class="case-end wrap"><a href="resume.html#mgvc">See this project on my résumé ↗</a><a href="march-madness.html">Next case study: Bracket Optimizer →</a></section><section class="wrap case-section"><a class="inklink" href="https://github.com/Zachgille/mgvc-decoder">View source on GitHub</a></section></main><footer class="site-footer"><div><a class="footer-name" href="index.html">Zach Gillespie<span class="accent">.</span></a><p>Computer Science · University of Michigan · December 2026</p></div><div class="footer-links"><a href="mailto:zachgill@umich.edu">Email ↗</a><a href="https://github.com/Zachgille">GitHub ↗</a><a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn ↗</a></div></footer></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MGVC decoder · Zach Gillespie</title>
+<meta name="description" content="Reverse-engineering Panasonic's MGVC Blu-ray format to rebuild 12-bit frames from an 8-bit base picture and an enhancement view.">
+<meta name="theme-color" content="#f3f2ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121214" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+<meta property="og:title" content="MGVC decoder">
+<meta property="og:image" content="https://zachgille.github.io/portfolio/og.png">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="top__name" href="./">Zach Gillespie</a>
+    <nav aria-label="Site">
+      <a href="./#work">Work</a>
+      <a href="games.html">Games</a>
+      <a href="resume.html">Résumé</a>
+      <a href="mailto:zachgill@umich.edu">Email</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="cs wrap">
+  <p class="crumb"><a href="./#work">← All work</a></p>
+
+  <header class="cs__head">
+    <h1>MGVC decoder</h1>
+    <p class="cs__dek">Panasonic’s Master Grade Video Coding puts <span class="nw">12-bit</span> video on a <span class="nw">Blu-ray</span> in a way ordinary players can ignore: a normal <span class="nw">8-bit</span> picture, plus enhancement data only Panasonic’s players use. These tools rebuild the <span class="nw">12-bit</span> frames without one.</p>
+    <dl class="cs__meta">
+      <div><dt>Languages</dt><dd>Python for the reference implementation and tests, C for the native converter</dd></div>
+      <div><dt>Built on</dt><dd>edge264-mvc and mvc-source for MVC decoding</dd></div>
+      <div><dt>Source</dt><dd><a href="https://github.com/Zachgille/mgvc-decoder">github.com/Zachgille/mgvc-decoder</a></dd></div>
+    </dl>
+  </header>
+
+  <section class="cs__section">
+    <h2>Where the extra bits are</h2>
+    <p>An MGVC disc uses the same multiview coding (MVC) that 3D Blu-rays use for the second eye. Instead of a second view of the scene, the dependent view carries corrections for the first. A mapping file on the disc, <code>EDL.bin</code>, describes how the virtual streams fit together.</p>
+    <p>I worked from Panasonic’s Japanese release of <i>The Wind Rises</i> (VWBS-1531), Panasonic’s patent <a href="https://patents.google.com/patent/US9392246B2/en">US9392246B2</a>, and the bitstreams themselves. On this disc, the per-frame shift values turned up inside nested SEI messages in the MVC stream:</p>
+    <figure class="fig">
+      <div class="fig__plate">
+        <table class="layout">
+          <tbody>
+            <tr><th scope="row">SEI type 37</th><td>MVC scalable nesting, one wrapper byte <code>0x40</code></td></tr>
+            <tr><th scope="row">└ SEI type 5</th><td>user data, unregistered</td></tr>
+            <tr><th scope="row">UUID</th><td><code>7e55bfa0 e9614d0a 9552d669 ba0da721</code></td></tr>
+            <tr><th scope="row">Signature</th><td><code>"12MD"</code></td></tr>
+            <tr><th scope="row">Header</th><td>flags <code>0x80</code>, count <i>n</i>, reserved <code>0x00</code></td></tr>
+            <tr><th scope="row">Shifts</th><td><i>n</i> bytes, bit 7 set, bits 0–6 the shift amount, one per frame in presentation order</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <figcaption>The shift metadata layout as observed on VWBS-1531, from the docstring of <a href="https://github.com/Zachgille/mgvc-decoder/blob/main/scripts/mgvc_shift_extract.py"><code>mgvc_shift_extract.py</code></a>.</figcaption>
+    </figure>
+  </section>
+
+  <section class="cs__section">
+    <h2>The arithmetic</h2>
+    <p>Each <span class="nw">12-bit</span> sample is the <span class="nw">8-bit</span> base sample moved up four bits, plus a correction from the enhancement view. The base layer went through a lossy encode, so it isn’t simply the original’s top eight bits. The correction has to carry that error too, which is why it’s a full byte rather than the four missing bits.</p>
+    <figure class="fig">
+      <div class="fig__plate">
+        <div class="bits" role="img" aria-label="An 8-bit base sample of 146, shifted left four bits, is 2336. Adding a correction of 188 from the enhancement stream gives the 12-bit sample 2524.">
+          <div class="bits__row">
+            <span class="bits__label">Base sample, shifted left 4<small><span class="nw">8-bit</span> value 146</small></span>
+            <span class="bits__cells"><span class="one">1</span><span>0</span><span>0</span><span class="one">1</span><span>0</span><span>0</span><span class="one">1</span><span>0</span><span class="pad">0</span><span class="pad">0</span><span class="pad">0</span><span class="pad">0</span></span>
+            <span class="bits__val">2336</span>
+          </div>
+          <div class="bits__row is-corr">
+            <span class="bits__label">+ Correction<small>enhancement stream</small></span>
+            <span class="bits__cells"><span class="off"></span><span class="off"></span><span class="off"></span><span class="off"></span><span class="one">1</span><span>0</span><span class="one">1</span><span class="one">1</span><span class="one">1</span><span class="one">1</span><span>0</span><span>0</span></span>
+            <span class="bits__val">188</span>
+          </div>
+          <div class="bits__row is-sum">
+            <span class="bits__label">= <span class="nw">12-bit</span> sample<small>matches the original</small></span>
+            <span class="bits__cells"><span class="one">1</span><span>0</span><span>0</span><span class="one">1</span><span class="one">1</span><span class="one">1</span><span>0</span><span class="one">1</span><span class="one">1</span><span class="one">1</span><span>0</span><span>0</span></span>
+            <span class="bits__val">2524</span>
+          </div>
+        </div>
+      </div>
+      <figcaption>The patent’s worked example, which the decoder runs as a self-test. A perfect base would be 157; the decoded base is 146.</figcaption>
+    </figure>
+    <p>On the disc, corrections are stored centered on 127 so they can be negative, and the frame’s shift value decides how far the correction is moved before it’s added:</p>
+    <figure class="codeblock">
+<pre><code>correction = enhancement - 127
+output = (base &lt;&lt; 4) + (correction &lt;&lt; max(shift_b - 8, 0))</code></pre>
+      <figcaption>The fixed <span class="nw">12-bit</span> formula, from the patent’s paragraphs 0188–0192, as written at the top of <a href="https://github.com/Zachgille/mgvc-decoder/blob/main/tools/src/mgvc_mvc_convert.c"><code>mgvc_mvc_convert.c</code></a>.</figcaption>
+    </figure>
+  </section>
+
+  <section class="cs__section">
+    <h2>Two implementations</h2>
+    <p>The Python version in <a href="https://github.com/Zachgille/mgvc-decoder/blob/main/scripts/mgvc_core.py"><code>mgvc_core.py</code></a> is the reference. It parses the disc mapping, does the sample arithmetic one value at a time, counts clipped samples, and is covered by unit tests on synthetic fixtures.</p>
+    <p>Pure Python is too slow for a feature-length film, so the native converter applies the same per-component shifts in C to paired views decoded by edge264-mvc, and streams the result to disk or straight into an encoder. It treats the shift map as evidence that has to be checked: a full conversion refuses a map that isn’t marked verified.</p>
+  </section>
+
+  <section class="cs__section">
+    <h2>Where it stands</h2>
+    <p>The reference implementation, the metadata extractor, the native converter and their tests are in the repository. I haven’t yet finished an end-to-end encode to <span class="nw">12-bit</span> HEVC in MKV with the disc’s audio, subtitles and chapters, which is the goal.</p>
+    <p class="note">The repository contains source code and synthetic test data only. No disc content, encoded video or third-party binaries.</p>
+  </section>
+
+  <nav class="next" aria-label="Next case study">
+    <span>Next</span>
+    <a href="march-madness.html">Bracket optimizer</a>
+  </nav>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Zach Gillespie · Ann Arbor, Michigan</span>
+    <nav aria-label="Elsewhere">
+      <a href="mailto:zachgill@umich.edu">zachgill@umich.edu</a>
+      <a href="https://github.com/Zachgille">GitHub</a>
+      <a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn</a>
+      <a href="Zach-Gillespie-Resume.pdf">Résumé PDF</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

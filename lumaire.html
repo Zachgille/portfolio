@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lumaire, an Android TV client · Zach Gillespie</title>
+<meta name="description" content="How sixteen genre shelves on an Android TV client went from sixteen queries to one shared candidate set, and what else the app does to keep a remote feeling quick.">
+<meta name="theme-color" content="#f3f2ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121214" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+<meta property="og:title" content="Lumaire, an Android TV client">
+<meta property="og:image" content="https://zachgille.github.io/portfolio/og.png">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="top__name" href="./">Zach Gillespie</a>
+    <nav aria-label="Site">
+      <a href="./#work">Work</a>
+      <a href="games.html">Games</a>
+      <a href="resume.html">Résumé</a>
+      <a href="mailto:zachgill@umich.edu">Email</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="cs wrap">
+  <p class="crumb"><a href="./#work">← All work</a></p>
+
+  <header class="cs__head">
+    <h1>Lumaire</h1>
+    <p class="cs__dek">A media client for Android TV, built around a directional remote: browse movies and series, search a local catalog, keep a watchlist, and pick up where playback stopped.</p>
+    <dl class="cs__meta">
+      <div><dt>Stack</dt><dd>Kotlin, Jetpack Compose, Room/SQLite, AndroidX Media3, coroutines</dd></div>
+      <div><dt>Tested on</dt><dd>An Onn TV box, plus JVM and instrumentation tests</dd></div>
+      <div><dt>Source</dt><dd><a href="https://github.com/Zachgille/AtlasTV">github.com/Zachgille/AtlasTV</a></dd></div>
+    </dl>
+  </header>
+
+  <section class="cs__section">
+    <h2>Sixteen shelves, one query</h2>
+    <p>The Movies and Series screens each open with eight genre shelves. Originally every shelf ran its own query, and every one of those queries did the same groundwork: join the discovery metadata to the catalog, drop duplicate variants of the same title, and work out a trusted rating (an IMDb rating only counts once it has 1,000 votes). On a TV box that adds up, and with a remote in your hand you feel every pause between shelves.</p>
+    <p>I moved the groundwork into one common table expression that all eight shelves read from. Each shelf takes its top titles from that shared candidate set, and only the winners leave SQLite to be loaded as full catalog rows.</p>
+    <figure class="codeblock">
+<pre><code><span class="k">WITH</span> candidates <span class="k">AS</span> (
+  <span class="k">SELECT</span> m.itemId, m.genres, c.normalizedTitle,
+         <span class="k">CASE WHEN</span> m.ratingSource = 'imdb' <span class="k">AND</span> m.ratingVotes >= 1000
+              <span class="k">THEN</span> COALESCE(m.ratingMilli, 0) <span class="k">ELSE</span> 0 <span class="k">END AS</span> trustedRating,
+         COALESCE(m.releaseSort, 0) <span class="k">AS</span> releaseDate
+  <span class="k">FROM</span> catalog_discovery m
+  <span class="k">JOIN</span> safe_catalog_items c <span class="k">ON</span> …
+  <span class="k">WHERE</span> m.contentType = ? <span class="k">AND</span> m.genres != ''
+    <span class="k">AND NOT EXISTS</span> (…)  <span class="c">-- skip later variants of the same title</span>
+)
+<span class="k">SELECT</span> * <span class="k">FROM</span> (<span class="k">SELECT</span> … <span class="k">FROM</span> candidates <span class="k">WHERE</span> genres <span class="k">LIKE</span> ?
+               <span class="k">ORDER BY</span> trustedRating <span class="k">DESC</span>, releaseDate <span class="k">DESC</span>, … <span class="k">LIMIT</span> ?)
+<span class="k">UNION ALL</span>
+<span class="k">SELECT</span> * <span class="k">FROM</span> (…)  <span class="c">-- one branch per shelf, eight in all</span></code></pre>
+      <figcaption>Simplified from <a href="https://github.com/Zachgille/AtlasTV/blob/main/app/src/main/java/com/atlas/atlastv/data/discovery/DiscoveryGenreQuery.kt"><code>DiscoveryGenreQuery.kt</code></a>.</figcaption>
+    </figure>
+    <p>The obvious tool here would be a window function, ranking titles within each genre, but the query has to run on the SQLite versions that ship with older Android TV devices. A shared CTE avoids that, and because nothing is stored there’s no cache to invalidate when the catalog refreshes.</p>
+  </section>
+
+  <section class="cs__section">
+    <h2>Measuring on the box</h2>
+    <p>I compared both versions on the device itself, an inexpensive Onn TV box, in three paired runs. All sixteen shelves came back with the same titles in the same order, and the median combined query time dropped by 40%.</p>
+    <figure class="fig">
+      <div class="fig__plate">
+        <div class="bars" style="--max-v:1400" role="img" aria-label="Median shelf query time: 1,232 milliseconds with sixteen separate queries, 745 milliseconds with one shared candidate set.">
+          <div class="bars__row">
+            <div class="bars__label"><span>Sixteen separate queries</span><span class="num">1,232 ms</span></div>
+            <div class="bars__track"><div class="bars__bar" style="--v:1232"></div></div>
+          </div>
+          <div class="bars__row is-after">
+            <div class="bars__label"><span>One shared candidate set</span><span class="num">745 ms</span></div>
+            <div class="bars__track"><div class="bars__bar" style="--v:745"></div></div>
+          </div>
+          <div class="bars__axis" aria-hidden="true"><span style="--t:0">0</span><span style="--t:500">500</span><span style="--t:1000">1,000 ms</span></div>
+        </div>
+      </div>
+      <figcaption>Median combined query time for all sixteen shelves, three paired runs on the Onn box.</figcaption>
+    </figure>
+    <p>Cold-launch time barely moved. The queries had been a real cost, but not the one holding up the first screen, which pointed the next round of work at artwork.</p>
+  </section>
+
+  <section class="cs__section">
+    <h2>Posters first</h2>
+    <p>A shelf of posters is mostly image loading. Lumaire schedules it with a few rules:</p>
+    <ul>
+      <li>A poster scrolling into view jumps ahead of queued prefetch work.</li>
+      <li>Two cards that need the same image share one download and decode, as long as the existing decode is large enough for both.</li>
+      <li>If every card waiting on a download goes away, the download is cancelled.</li>
+      <li>Disk-cache reads and network fetches have separate concurrency limits, so images already on disk don’t wait behind slow downloads.</li>
+    </ul>
+  </section>
+
+  <section class="cs__section">
+    <h2>When the stream drops</h2>
+    <p>If you rewind and then the connection fails, playback should resume from where you rewound to, not from the last saved checkpoint. On a retryable failure, Lumaire can switch to a configured backup endpoint while keeping the selected episode and the current position. Authentication and codec errors take their own recovery paths instead of being retried.</p>
+    <p>Device tests cover recovery for both movies and episodes, resuming from a saved position 255 seconds in.</p>
+  </section>
+
+  <section class="cs__section">
+    <h2>What’s in the repo</h2>
+    <p>Lumaire doesn’t include any content. You point it at a media source you’re authorized to use, and discovery metadata (genres and ratings) comes from IMDb’s non-commercial datasets, prepared locally by a script. The repository has JVM unit tests, Android instrumentation tests, exported Room schemas and synthetic parser fixtures. Account settings and device diagnostics stay out of it.</p>
+    <p class="note">The project was called AtlasTV until recently, so the repository and package names still use the old name.</p>
+  </section>
+
+  <nav class="next" aria-label="Next case study">
+    <span>Next</span>
+    <a href="triageflow.html">TriageFlow</a>
+  </nav>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Zach Gillespie · Ann Arbor, Michigan</span>
+    <nav aria-label="Elsewhere">
+      <a href="mailto:zachgill@umich.edu">zachgill@umich.edu</a>
+      <a href="https://github.com/Zachgille">GitHub</a>
+      <a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn</a>
+      <a href="Zach-Gillespie-Resume.pdf">Résumé PDF</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

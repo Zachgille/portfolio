@@ -1,14 +1,123 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Résumé | Zach Gillespie</title><meta name="description" content="Native HTML résumé for Zach Gillespie: University of Michigan CS, technical projects, skills, and Michigan Cantor leadership.">
-<meta name="theme-color" content="#101419"><link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="edition.css"><script src="script.js" defer></script><noscript><style>.step-panel[hidden]{display:block!important}.step-grid{display:none}.step-panel+.step-panel{margin-top:24px}</style></noscript></head>
-<body><a class="skip" href="#main">Skip to content</a><header class="site-header"><div class="nav-wrap"><a class="wordmark" href="index.html">ZG<span>/</span></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="atlas.html">AtlasTV</a><a href="metroid.html">Games</a><a href="resume.html" aria-current="page">Résumé</a></nav></div></header>
-<main id="main">
-<section class="resume-header wrap"><div><p class="eyebrow">RÉSUMÉ / SOFTWARE ENGINEERING</p><h1>Zach Gillespie<span class="accent">.</span></h1><p class="lead">University of Michigan · B.S. Computer Science · Expected December 2026</p><div class="resume-links"><a href="mailto:zachgill@umich.edu">Email ↗</a><a href="https://github.com/Zachgille">GitHub ↗</a><a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn ↗</a></div></div><a class="inklink" href="Zach-Gillespie-Resume.pdf">Download one-page PDF</a></section>
-<div class="resume wrap"><section class="resume-section"><h2>Education</h2><div><h3>University of Michigan, College of Engineering</h3><p class="entry-meta">B.S. Computer Science <span>Expected December 2026</span></p><p class="prose">Selected coursework: Data Structures &amp; Algorithms, Software Engineering, Databases, Computer Networks, Information Retrieval, Artificial Intelligence, and Computer Organization.</p></div></section>
-<section class="resume-section"><h2>Technical skills</h2><dl class="skills"><dt>Languages</dt><dd>Kotlin, TypeScript, JavaScript, Python, C++, Java, SQL</dd><dt>Backend</dt><dd>Node.js, NestJS, Fastify, REST APIs, Prisma, BullMQ</dd><dt>Frontend</dt><dd>React, Next.js, HTML/CSS</dd><dt>Databases</dt><dd>PostgreSQL, DuckDB, Redis</dd><dt>Testing &amp; tools</dt><dd>Git, Docker, GitHub Actions, Vitest, React Testing Library, k6, Linux</dd><dt>Data &amp; ML</dt><dd>pandas, scikit-learn, feature engineering, simulation modeling</dd></dl></section>
-<section class="resume-section"><h2>Projects</h2><div><article class="resume-entry" id="atlas"><h3><a href="atlas.html">AtlasTV — Android TV media client</a></h3><a class="inklink" href="https://github.com/Zachgille/AtlasTV">GitHub</a><p class="entry-tech">Kotlin · Jetpack Compose · Room · SQLite · Media3</p><ul><li>Built a Kotlin TV client for 32,513 movies and shows with catalog search and playback failover that preserves watch progress.</li><li>Batched SQLite queries across 16 genre shelves, cutting median query time 40% (1,232 to 745 ms) on an Onn TV box.</li></ul></article><article id="triageflow" class="resume-entry"><h3><a href="triageflow.html">TriageFlow — Multi-Tenant Support Desk ↗</a></h3><a class="inklink" href="https://github.com/Zachgille/triageflow">GitHub</a><p class="entry-tech">TypeScript · Next.js · NestJS/Fastify · PostgreSQL · Prisma · Redis · BullMQ · Clerk</p><ul><li>Built a full-stack support desk with authenticated workspaces, tenant-scoped RBAC, ticket and comment workflows, internal notes, audit logs, SLA workers, and analytics rollups.</li><li>Designed backend-authoritative tenant isolation using RequestContext, composite tenant relations, and live PostgreSQL integration tests for cross-tenant denial and permission boundaries.</li><li>Seeded 50,000 tickets and 250,000 comments; a query-plan-driven composite index reduced unfiltered ticket-list p95 from 42.0 ms to 17.6 ms in a controlled local benchmark.</li></ul></article>
-<article id="march-madness" class="resume-entry"><h3><a href="march-madness.html">March Madness Bracket Optimization Pipeline ↗</a></h3><a class="inklink" href="https://github.com/Zachgille/march-madness-optimizer">GitHub</a><p class="entry-tech">Python · DuckDB · pandas · scikit-learn</p><ul><li>Implemented reproducible stages for ingestion, team-alias normalization, matchup feature generation, model training, tournament simulation, and bracket evaluation.</li><li>Trained a logistic matchup model and simulated 50,000 tournament runs to estimate round-reach, Final Four, and championship probabilities.</li><li>Evaluated candidate brackets using expected points, first-place probability, expected payout, and public-pick duplication to optimize pool-specific strategy.</li></ul></article>
-<article id="mgvc" class="resume-entry"><h3><a href="mgvc.html">Panasonic MGVC Decoder ↗</a></h3><a class="inklink" href="https://github.com/Zachgille/mgvc-decoder">GitHub</a><p class="entry-tech">Reverse engineering · Binary / stream processing · Video reconstruction</p><ul><li>Investigated proprietary MGVC video on Panasonic’s VWBS-1531 Blu-ray using EDL.bin virtual mapping, base/enhancement streams, and MGVC SEI/data structures.</li><li>Used Panasonic patent US9392246B2 to inform residual reconstruction and compensation for lossy base-encode errors.</li><li>Worked on reconstructing and validating 12-bit 4:2:0 samples, targeting conventional Main12 HEVC/MKV while preserving source SDR characteristics and disc streams.</li></ul></article></div></section>
-<section id="leadership" class="resume-section"><h2>Technical leadership</h2><div><h3>Michigan Cantor</h3><p class="entry-meta">Founder &amp; Technical/Media Lead <span>April 2023 – Present</span></p><p class="entry-tech">University of Michigan</p><ul><li>Founded a student organization focused on programming, quantitative finance, mentorship, and project-based technical development.</li><li>Built member development around coding projects, course advising, peer mentorship, interview preparation, and recruiting/networking events.</li><li>Helped establish industry-facing programming and finance events with partners including Two Sigma and PEAK6.</li></ul></div></section></div></main><footer class="site-footer"><div><a class="footer-name" href="index.html">Zach Gillespie<span class="accent">.</span></a><p>Computer Science · University of Michigan · December 2026</p></div><div class="footer-links"><a href="mailto:zachgill@umich.edu">Email ↗</a><a href="https://github.com/Zachgille">GitHub ↗</a><a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn ↗</a></div></footer></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Résumé · Zach Gillespie</title>
+<meta name="description" content="Résumé of Zach Gillespie: B.S. Computer Science, University of Michigan, December 2026.">
+<meta name="theme-color" content="#f3f2ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121214" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="top__name" href="./">Zach Gillespie</a>
+    <nav aria-label="Site">
+      <a href="./#work">Work</a>
+      <a href="games.html">Games</a>
+      <a href="resume.html" aria-current="page">Résumé</a>
+      <a href="mailto:zachgill@umich.edu">Email</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="cv wrap">
+  <header class="cv__head">
+    <div>
+      <h1>Zach Gillespie</h1>
+      <p>Ann Arbor, MI · <a href="mailto:zachgill@umich.edu">zachgill@umich.edu</a> · <a href="https://github.com/Zachgille">GitHub</a> · <a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn</a></p>
+    </div>
+    <a class="button cv__download" href="Zach-Gillespie-Resume.pdf">Download PDF <small>one page</small></a>
+  </header>
+
+  <section class="cv__section">
+    <h2>Education</h2>
+    <div class="cv__entry">
+      <header><h3>University of Michigan, College of Engineering</h3><span>Ann Arbor, MI</span></header>
+      <header><span>B.S. Computer Science</span><span>Expected December 2026</span></header>
+      <p style="margin-top:8px;color:var(--ink-2)">Coursework: Data Structures &amp; Algorithms, Software Engineering, Databases, Computer Networks, Information Retrieval, Artificial Intelligence, Computer Organization</p>
+    </div>
+  </section>
+
+  <section class="cv__section">
+    <h2>Technical skills</h2>
+    <dl class="cv__skills">
+      <dt>Languages</dt><dd>Kotlin, TypeScript, JavaScript, Python, C++, Java, SQL</dd>
+      <dt>Backend</dt><dd>Node.js, NestJS, Fastify, REST APIs, Prisma, BullMQ</dd>
+      <dt>Frontend</dt><dd>React, Next.js, HTML/CSS</dd>
+      <dt>Databases</dt><dd>PostgreSQL, DuckDB, Redis</dd>
+      <dt>Testing &amp; tools</dt><dd>Git, Docker, GitHub Actions, Vitest, React Testing Library, k6, Linux</dd>
+      <dt>Data &amp; ML</dt><dd>pandas, scikit-learn, feature engineering, simulation modeling</dd>
+    </dl>
+  </section>
+
+  <section class="cv__section">
+    <h2>Projects</h2>
+    <div>
+      <article class="cv__entry" id="triageflow">
+        <header><h3><a href="triageflow.html">TriageFlow</a>, multi-tenant support desk</h3><span><a href="https://github.com/Zachgille/triageflow">GitHub</a></span></header>
+        <p class="cv__tech">TypeScript, Next.js, NestJS/Fastify, PostgreSQL, Prisma, Redis, BullMQ, Clerk</p>
+        <ul>
+          <li>Built an end-to-end multi-tenant support platform with authenticated workspaces, RBAC, ticket workflows, asynchronous SLA processing, audit logs, and analytics.</li>
+          <li>Designed backend-authoritative tenant isolation using RequestContext, composite tenant relations, and live PostgreSQL integration tests for cross-tenant denial and permission boundaries.</li>
+          <li>Seeded 50k tickets and 250k comments, then reduced unfiltered ticket-list p95 latency from 42.0 ms to 17.6 ms with a query-plan-driven PostgreSQL composite index.</li>
+        </ul>
+      </article>
+      <article class="cv__entry" id="lumaire">
+        <header><h3><a href="lumaire.html">Lumaire</a>, Android TV media client</h3><span><a href="https://github.com/Zachgille/AtlasTV">GitHub</a></span></header>
+        <p class="cv__tech">Kotlin, Jetpack Compose, Room/SQLite, AndroidX Media3</p>
+        <ul>
+          <li>Built a Kotlin TV client for 32,513 movies and shows with catalog search and playback failover that preserves watch progress.</li>
+          <li>Batched SQLite queries across 16 genre shelves, cutting median query time 40% (1,232 to 745 ms) on an Onn TV box.</li>
+        </ul>
+      </article>
+      <article class="cv__entry" id="march-madness">
+        <header><h3><a href="march-madness.html">March Madness bracket optimization pipeline</a></h3><span><a href="https://github.com/Zachgille/march-madness-optimizer">GitHub</a></span></header>
+        <p class="cv__tech">Python, DuckDB, pandas, scikit-learn</p>
+        <ul>
+          <li>Implemented reproducible Python/DuckDB pipeline stages for data ingestion, team-alias normalization, matchup feature generation, model training, tournament simulation, and bracket evaluation.</li>
+          <li>Trained a logistic matchup model and simulated 50,000 tournament runs to estimate round-reach, Final Four, and championship probabilities.</li>
+          <li>Evaluated candidate brackets using expected points, first-place probability, expected payout, and public-pick duplication modeling to optimize pool-specific strategy.</li>
+        </ul>
+      </article>
+      <article class="cv__entry" id="mgvc">
+        <header><h3><a href="mgvc.html">Panasonic MGVC decoder</a></h3><span><a href="https://github.com/Zachgille/mgvc-decoder">GitHub</a></span></header>
+        <p class="cv__tech">Reverse engineering, H.264/MVC, binary stream processing</p>
+        <ul>
+          <li>Reverse-engineered Panasonic’s proprietary MGVC video format by mapping virtual streams and analyzing AVC/MVC base, enhancement, and metadata structures.</li>
+          <li>Applied Panasonic codec patent documentation to reconstruct and validate 12-bit 4:2:0 sample data toward conventional HEVC/MKV output.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section class="cv__section">
+    <h2>Leadership</h2>
+    <article class="cv__entry">
+      <header><h3>Michigan Cantor, Founder &amp; Technical/Media Lead</h3><span>April 2023 – April 2025</span></header>
+      <ul>
+        <li>Founded and grew a 62-member student organization dual-affiliated with the University of Michigan College of Engineering and Ross School of Business, focused on programming, quantitative finance, mentorship, and project-based technical development.</li>
+        <li>Built member-development structure around coding projects, course advising, peer mentorship, interview preparation, and recruiting/networking events.</li>
+        <li>Organized industry-facing programming and finance events with partners including Two Sigma and PEAK6.</li>
+      </ul>
+    </article>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Zach Gillespie · Ann Arbor, Michigan</span>
+    <nav aria-label="Elsewhere">
+      <a href="mailto:zachgill@umich.edu">zachgill@umich.edu</a>
+      <a href="https://github.com/Zachgille">GitHub</a>
+      <a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

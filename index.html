@@ -1,1 +1,217 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Software engineer | Zach Gillespie</title><meta name="description" content="Software projects and playable games by Zach Gillespie, University of Michigan computer science."><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="edition.css"></head><body><a class="skip" href="#main">Skip to content</a><header class="site-header"><div class="nav-wrap"><a class="wordmark" href="index.html">ZG<span>/</span></a><nav aria-label="Main navigation"><a href="index.html" aria-current="page">Home</a><a href="projects.html">Projects</a><a href="atlas.html">AtlasTV</a><a href="metroid.html">Games</a><a href="resume.html">Résumé</a></nav></div></header><main id="main" class="folio"><section class="mast"><div class="byline">Software engineering <span>Ann Arbor, MI</span></div><h1>Zach <em>Gillespie</em></h1><div class="mastbase"><p>I build software for the living room, the support desk, and the occasional puzzle about a frog.</p><p>University of Michigan · CS ’26<br>Seeking full-time software engineering roles</p></div></section><section class="spread"><article class="leadstory"><p class="rubric">Android TV / Featured project</p><h2><a href="atlas.html">AtlasTV, from the couch.</a></h2><p>With a remote in hand, every wait between shelves is noticeable. I built a Kotlin media client and measured what happened when sixteen shelves shared the same query work.</p><figure class="timechart"><figcaption>Genre shelf queries <span>Median elapsed time</span></figcaption><div class="measure"><label>Individual queries</label><b>1,232 ms</b><i></i></div><div class="measure faster"><label>Batched query</label><b>745 ms</b><i></i></div><small>Physical Onn TV box · three paired runs</small></figure><a class="inklink" href="atlas.html">Read the AtlasTV case study</a></article><article class="gamesstory"><p class="rubric">Game development / Unity</p><a class="picture" href="metroid.html#swap-courier"><img width="1600" height="900" src="assets/swap-courier-gameplay.webp" alt="Swap Courier gameplay in a hand-painted garden"><span>Swap Courier · gameplay</span></a><h2><a href="metroid.html">The games room</a></h2><p>Trade places with a parcel in <i>Swap Courier</i>, or grapple through a custom level in my <i>Metroid</i> recreation.</p><a class="inklink" href="metroid.html">Get the Windows and Mac builds</a></article></section><section class="listing"><h2>More engineering work</h2><a href="triageflow.html" class="entryrow"><span>Backend engineering</span><h3>TriageFlow</h3><p>Finding the right index for a support desk with 250,000 comments.</p></a><a href="march-madness.html" class="entryrow"><span>Statistical modeling</span><h3>March Madness</h3><p>Choosing a bracket when the other entries influence your payout.</p></a><a href="mgvc.html" class="entryrow"><span>Video engineering</span><h3>Panasonic MGVC</h3><p>Recovering 12-bit samples from a proprietary Blu-ray format.</p></a></section><section class="bio"><h2>Michigan Cantor</h2><p>I founded a student organization that grew to 62 members across Michigan Engineering and Ross. We organized coding projects, peer mentorship, and events with Two Sigma and PEAK6.</p></section></main><footer class="foliofoot"><span>Zach Gillespie · Ann Arbor, Michigan</span><a href="mailto:zachgill@umich.edu">zachgill@umich.edu</a><a href="https://github.com/Zachgille">GitHub</a></footer></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zach Gillespie, software engineer</title>
+<meta name="description" content="Zach Gillespie studies computer science at the University of Michigan and builds Android TV apps, multi-tenant backends, video decoders and small games.">
+<meta name="theme-color" content="#f3f2ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121214" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Zach Gillespie, software engineer">
+<meta property="og:description" content="Android TV, multi-tenant backends, video decoders and the occasional puzzle about a frog.">
+<meta property="og:url" content="https://zachgille.github.io/portfolio/">
+<meta property="og:image" content="https://zachgille.github.io/portfolio/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<script src="site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="top__name" href="./">Zach Gillespie</a>
+    <nav aria-label="Site">
+      <a href="#work">Work</a>
+      <a href="games.html">Games</a>
+      <a href="resume.html">Résumé</a>
+      <a href="mailto:zachgill@umich.edu">Email</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section class="intro wrap">
+    <p class="intro__lede">I’m <b>Zach Gillespie</b>, a computer science student at the University of Michigan. I build software for the living room, the support desk, and the occasional puzzle about a frog.</p>
+    <div class="intro__meta">
+      <p>B.S. Computer Science, December 2026.<br>Looking for a full-time software engineering role.</p>
+      <ul class="linklist">
+        <li><a href="Zach-Gillespie-Resume.pdf">Résumé (PDF)</a></li>
+        <li><a href="https://github.com/Zachgille">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn</a></li>
+        <li><a href="mailto:zachgill@umich.edu">zachgill@umich.edu</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section wrap" id="work" aria-labelledby="work-h">
+    <h2 class="section__label" id="work-h">Selected work</h2>
+
+    <article class="project">
+      <div>
+        <h3 class="project__name"><a href="lumaire.html">Lumaire</a></h3>
+        <p class="project__kind">Android TV client · Kotlin, Jetpack Compose, Room</p>
+        <div class="project__body">
+          <p>A media client built for a television and a directional remote. The Movies and Series screens open with sixteen genre shelves, and each shelf used to run its own query, repeating the same work. Now they share one candidate set inside SQLite.</p>
+        </div>
+        <p class="project__links"><a href="lumaire.html">Case study</a><a href="https://github.com/Zachgille/AtlasTV">Source</a></p>
+      </div>
+      <figure class="fig">
+        <div class="fig__plate">
+          <div class="bars" style="--max-v:1400" role="img" aria-label="Median shelf query time: 1,232 milliseconds with sixteen separate queries, 745 milliseconds with one shared candidate set.">
+            <div class="bars__row">
+              <div class="bars__label"><span>Sixteen separate queries</span><span class="num">1,232 ms</span></div>
+              <div class="bars__track"><div class="bars__bar" style="--v:1232"></div></div>
+            </div>
+            <div class="bars__row is-after">
+              <div class="bars__label"><span>One shared candidate set</span><span class="num">745 ms</span></div>
+              <div class="bars__track"><div class="bars__bar" style="--v:745"></div></div>
+            </div>
+            <div class="bars__axis" aria-hidden="true"><span style="--t:0">0</span><span style="--t:500">500</span><span style="--t:1000">1,000 ms</span></div>
+          </div>
+        </div>
+        <figcaption>Median time to fill all sixteen shelves, from three paired runs on an Onn TV box. Both versions return the same titles in the same order.</figcaption>
+      </figure>
+    </article>
+
+    <article class="project">
+      <div>
+        <h3 class="project__name"><a href="triageflow.html">TriageFlow</a></h3>
+        <p class="project__kind">Multi-tenant support desk · TypeScript, NestJS, PostgreSQL</p>
+        <div class="project__body">
+          <p>Tickets, replies, internal notes and SLA checks for many companies sharing one database. Tenant isolation is enforced in the backend and the schema, and tested against a live database. With 50,000 seeded tickets, one composite index turned the main queue’s sequential scan into an index scan.</p>
+        </div>
+        <p class="project__links"><a href="triageflow.html">Case study</a><a href="https://github.com/Zachgille/triageflow">Source</a></p>
+      </div>
+      <figure class="fig">
+        <div class="fig__plate plan">
+          <div class="plan__block">
+            <p class="plan__head"><span>Before</span><span class="num">13.591 ms</span></p>
+<pre><mark>Seq Scan on tickets</mark> ... rows=25000
+Rows Removed by Filter: 25003
+Sort Method: top-N heapsort
+Execution Time: 13.591 ms</pre>
+          </div>
+          <div class="plan__block is-after">
+            <p class="plan__head"><span>After</span><span class="num">0.142 ms</span></p>
+<pre><mark>Index Scan using tickets_<wbr>tenant_<wbr>id_<wbr>created_<wbr>at_<wbr>id_<wbr>desc_<wbr>idx</mark> on tickets
+Index Cond: tenant_id = bench-large
+Execution Time: 0.142 ms</pre>
+          </div>
+        </div>
+        <figcaption><code>EXPLAIN ANALYZE</code> excerpts for one tenant’s ticket queue. Under a five-minute k6 load test, p95 latency for the endpoint fell from 42.0 ms to 17.6 ms.</figcaption>
+      </figure>
+    </article>
+
+    <article class="project">
+      <div>
+        <h3 class="project__name"><a href="mgvc.html">MGVC decoder</a></h3>
+        <p class="project__kind">Reverse engineering · Python, C, H.264/MVC</p>
+        <div class="project__body">
+          <p>Panasonic’s MGVC <span class="nw">Blu-rays</span> carry an ordinary <span class="nw">8-bit</span> picture plus an enhancement stream that only Panasonic’s own players use. I worked out how the two combine, from the stream layout and Panasonic’s patent, and wrote tools that rebuild the <span class="nw">12-bit</span> frames.</p>
+        </div>
+        <p class="project__links"><a href="mgvc.html">Case study</a><a href="https://github.com/Zachgille/mgvc-decoder">Source</a></p>
+      </div>
+      <figure class="fig">
+        <div class="fig__plate">
+          <div class="bits" role="img" aria-label="An 8-bit base sample of 146, shifted left four bits, is 2336. Adding a correction of 188 from the enhancement stream gives the 12-bit sample 2524.">
+            <div class="bits__row">
+              <span class="bits__label">Base sample, shifted left 4<small><span class="nw">8-bit</span> value 146</small></span>
+              <span class="bits__cells"><span class="one">1</span><span>0</span><span>0</span><span class="one">1</span><span>0</span><span>0</span><span class="one">1</span><span>0</span><span class="pad">0</span><span class="pad">0</span><span class="pad">0</span><span class="pad">0</span></span>
+              <span class="bits__val">2336</span>
+            </div>
+            <div class="bits__row is-corr">
+              <span class="bits__label">+ Correction<small>enhancement stream</small></span>
+              <span class="bits__cells"><span class="off"></span><span class="off"></span><span class="off"></span><span class="off"></span><span class="one">1</span><span>0</span><span class="one">1</span><span class="one">1</span><span class="one">1</span><span class="one">1</span><span>0</span><span>0</span></span>
+              <span class="bits__val">188</span>
+            </div>
+            <div class="bits__row is-sum">
+              <span class="bits__label">= <span class="nw">12-bit</span> sample<small>matches the original</small></span>
+              <span class="bits__cells"><span class="one">1</span><span>0</span><span>0</span><span class="one">1</span><span class="one">1</span><span class="one">1</span><span>0</span><span class="one">1</span><span class="one">1</span><span class="one">1</span><span>0</span><span>0</span></span>
+              <span class="bits__val">2524</span>
+            </div>
+          </div>
+        </div>
+        <figcaption>The worked example from Panasonic’s patent, which the decoder runs as a self-test. The base layer is lossy (146, where the original’s top eight bits are 157), so the correction carries that error as well as the four missing low bits.</figcaption>
+      </figure>
+    </article>
+
+    <article class="project">
+      <div>
+        <h3 class="project__name"><a href="march-madness.html">Bracket optimizer</a></h3>
+        <p class="project__kind">March Madness pools · Python, DuckDB, scikit-learn</p>
+        <div class="project__body">
+          <p>The likeliest bracket often isn’t the one most likely to win your pool, because plenty of other people pick it too. This pipeline models matchups, simulates the tournament 50,000 times, and scores candidate brackets against simulated opponents built from public pick rates.</p>
+        </div>
+        <p class="project__links"><a href="march-madness.html">Case study</a><a href="https://github.com/Zachgille/march-madness-optimizer">Source</a></p>
+      </div>
+      <figure class="fig" data-pool>
+        <div class="fig__plate pool">
+          <div class="pool__control">
+            <label for="pool-size-home">Pool size</label>
+            <input id="pool-size-home" name="pool-size" type="range" min="2" max="200" value="25">
+            <output data-out="pool-size" for="pool-size-home">25</output>
+          </div>
+          <div class="pool__picks">
+            <div class="pool__pick" data-pick data-title="0.25" data-share="0.40">
+              <div class="pool__pick-head"><span>Favorite: 25% to win the title, picked by 40%</span><span class="num" data-odds>2.5%</span></div>
+              <div class="pool__track"><div class="pool__bar" style="width:36%"></div></div>
+            </div>
+            <div class="pool__pick is-best" data-pick data-title="0.12" data-share="0.05">
+              <div class="pool__pick-head"><span>Underdog: 12% to win the title, picked by 5%</span><span class="num" data-odds>6.9%</span></div>
+              <div class="pool__track"><div class="pool__bar" style="width:100%"></div></div>
+            </div>
+          </div>
+          <p class="pool__verdict" data-verdict aria-live="polite">In a pool of 25, the underdog pick wins the pool 2.8× as often, despite being half as likely to win the title.</p>
+        </div>
+        <figcaption>Your chance of winning the pool with each champion pick, in a stripped-down model where only the champion counts and ties split evenly. The real evaluator simulates full brackets.</figcaption>
+      </figure>
+    </article>
+  </section>
+
+  <section class="section wrap" aria-labelledby="games-h">
+    <h2 class="section__label" id="games-h">Games</h2>
+    <div class="games">
+      <a class="games__shot" href="games.html"><img src="assets/swap-courier-gameplay.webp" width="1600" height="900" loading="lazy" alt="Swap Courier: a frog with a mail bag sits beside a garden grid of hedges and paving stones, with a ribboned parcel to deliver."></a>
+      <div>
+        <h3>Swap Courier</h3>
+        <p>A puzzle game about a frog who delivers parcels by trading places with them. Twelve levels, unlimited undo, no timers. I made it in Unity for EECS 494, Michigan’s game design course.</p>
+        <p><a href="games.html">Download for Windows or Mac</a></p>
+        <p class="small">Also on that page: a team recreation of the original Metroid, with a custom level built around a grappling hook.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="else-h">
+    <h2 class="section__label" id="else-h">Outside class</h2>
+    <div class="aside">
+      <h3>Michigan Cantor <span class="num" style="font-size:15px;color:var(--ink-3);font-weight:400">2023–2025</span></h3>
+      <p>I founded a student organization for programming and quantitative finance and grew it to 62 members across the College of Engineering and the Ross School of Business. We ran coding projects, course advising, peer mentoring and interview prep, and organized events with Two Sigma and PEAK6.</p>
+    </div>
+  </section>
+
+  <section class="contact wrap" aria-labelledby="contact-h">
+    <h2 class="section__label" id="contact-h">Contact</h2>
+    <p class="contact__line">The quickest way to reach me is email: <a href="mailto:zachgill@umich.edu">zachgill@umich.edu</a></p>
+    <button class="copy" type="button" data-copy="zachgill@umich.edu" hidden>Copy address</button>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Zach Gillespie · Ann Arbor, Michigan</span>
+    <nav aria-label="Elsewhere">
+      <a href="https://github.com/Zachgille">GitHub</a>
+      <a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn</a>
+      <a href="Zach-Gillespie-Resume.pdf">Résumé PDF</a>
+      <a href="https://github.com/Zachgille/portfolio">Site source</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

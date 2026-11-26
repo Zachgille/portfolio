@@ -1,12 +1,162 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TriageFlow | Zach Gillespie</title><meta name="description" content="A multi-tenant support desk with backend-enforced authorization, PostgreSQL integration tests, and measured query optimization.">
-<meta name="theme-color" content="#101419"><link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="style.css"><link rel="stylesheet" href="edition.css"><script src="script.js" defer></script><noscript><style>.step-panel[hidden]{display:block!important}.step-grid{display:none}.step-panel+.step-panel{margin-top:24px}</style></noscript></head>
-<body><a class="skip" href="#main">Skip to content</a><header class="site-header"><div class="nav-wrap"><a class="wordmark" href="index.html">ZG<span>/</span></a><nav aria-label="Main navigation"><a href="index.html">Home</a><a href="projects.html">Projects</a><a href="atlas.html">AtlasTV</a><a href="metroid.html">Games</a><a href="resume.html">Résumé</a></nav></div></header>
-<main id="main"><section class="case-intro wrap"><a class="back" href="projects.html">← All projects</a><p class="eyebrow">CASE STUDY / 01</p><h1>TriageFlow</h1><p class="lead prose">A multi-tenant support desk designed around a simple obligation: every request must stay inside the right workspace, with the right permissions.</p><div class="tags"><span>TypeScript</span><span>Next.js</span><span>NestJS / Fastify</span><span>PostgreSQL</span><span>Prisma</span><span>Redis / BullMQ</span><span>Clerk</span></div></section>
-<section class="wrap"><div class="metrics"><div><strong>50,000</strong><span>seeded tickets</span></div><div><strong>250,000</strong><span>seeded comments</span></div><div><strong>58%</strong><span>lower ticket-list p95</span></div></div></section>
-<section class="case-section wrap"><div class="section-heading"><div><p class="eyebrow">SYSTEM DESIGN</p><h2>One application.<br>Explicit boundaries.</h2></div><p class="prose">A modular monolith keeps business rules together; a separate worker process handles asynchronous work. Select a component to inspect its responsibilities.</p></div><div class="explorer" data-explorer><div class="step-grid" aria-label="Architecture components"><button type="button" class="step" aria-pressed="true" aria-controls="Architecture-0" data-step="0"><span>01</span><strong>Web</strong><small>Next.js + Clerk</small></button><button type="button" class="step" aria-pressed="false" aria-controls="Architecture-1" data-step="1"><span>02</span><strong>API</strong><small>NestJS + Fastify</small></button><button type="button" class="step" aria-pressed="false" aria-controls="Architecture-2" data-step="2"><span>03</span><strong>Database</strong><small>PostgreSQL + Prisma</small></button><button type="button" class="step" aria-pressed="false" aria-controls="Architecture-3" data-step="3"><span>04</span><strong>Workers</strong><small>Redis + BullMQ</small></button></div><div class="step-content" aria-live="polite"><section id="Architecture-0" class="step-panel"><p class="eyebrow">01 / Web</p><h3>Identity starts the request.</h3><p class="prose">Clerk provides authentication. The Next.js client presents ticket queues, conversations, workspace flows, and permission-aware analytics. Hiding a control is a usability choice; the backend still checks every protected operation.</p></section><section id="Architecture-1" class="step-panel" hidden><p class="eyebrow">02 / API</p><h3>Authorization stays with the backend.</h3><p class="prose">The modular monolith resolves membership and permissions into a tenant-scoped RequestContext. Controllers delegate to services and repositories, which carry that context into tenant-owned data access.</p></section><section id="Architecture-2" class="step-panel" hidden><p class="eyebrow">03 / Database</p><h3>Tenant boundaries reach the schema.</h3><p class="prose">Tenant-owned tables and composite tenant relations support isolation. Ticket mutations and their audit records share transactional boundaries. Cursor pagination orders queues by created_at and id.</p></section><section id="Architecture-3" class="step-panel" hidden><p class="eyebrow">04 / Workers</p><h3>Background work follows the same rules.</h3><p class="prose">A separate worker process handles SLA breach checks and analytics rollups. Workers reuse tenant-scoped access rules; database uniqueness supports idempotency when jobs are retried.</p></section></div></div></section>
-<section class="case-section wrap two-columns"><div><p class="eyebrow">THE ENGINEERING PROBLEM</p><h2>A workspace is a<br>security boundary.</h2><p class="prose">TriageFlow models tickets, customer replies, internal notes, assignments, audit logs, SLA checks, and analytics for multiple workspaces. Authentication identifies a user; application-owned memberships and roles determine what that user may do within a tenant.</p><p class="prose">I designed tenant isolation to be authoritative on the backend. Services and repositories receive RequestContext, and composite database relations reinforce tenant ownership. Internal notes are only returned to users with the corresponding permission.</p></div><div class="evidence-box"><p class="eyebrow">VALIDATION</p><h3>Test the denial path.</h3><p class="prose">Live PostgreSQL integration tests exercise cross-tenant denial and permission boundaries. The repository also covers pagination, audit behavior, and transactional behavior using a dedicated test database and a test authentication provider.</p><ul class="clean-list"><li>Identity: Clerk authentication</li><li>Authorization: tenant-scoped roles and permissions</li><li>Data access: context-aware services and repositories</li><li>Evidence: database-backed integration tests</li></ul></div></section>
-<section class="case-section wrap"><div class="section-heading"><div><p class="eyebrow">PERFORMANCE / MEASURE → INSPECT → CHANGE</p><h2>A query plan made<br>the next step clear.</h2></div><p class="prose">The unfiltered ticket queue used a sequential scan and top-N sort. A composite index aligned tenant selection with the queue’s ordering and changed the plan to an index scan.</p></div><figure class="benchmark"><figcaption><strong>Unfiltered ticket-list latency</strong><span>p95 · milliseconds · lower is better</span></figcaption><div class="bar-row"><span>Before index</span><div class="bar-track"><div class="bar before" style="--bar:100%">42.0 <small>ms</small></div></div></div><div class="bar-row"><span>After index</span><div class="bar-track"><div class="bar after" style="--bar:41.9%">17.6 <small>ms</small></div></div></div><p class="chart-note">Local k6 benchmark · 20 virtual users · 5 minutes · 50,000 tickets and 250,000 comments. Repository records 17.59 ms; displayed rounded to 17.6 ms. Reduction: approximately 58%.</p></figure><div class="two-columns"><div><h3>The change</h3><p class="prose">The index uses <code>tenant_id, created_at DESC, id DESC</code>, matching tenant-scoped queue reads and their cursor ordering. This ties the optimization to a measured access pattern.</p></div><div><h3>What the result establishes</h3><p class="prose">The improvement was measured on a local Windows machine with an Intel i5-9600K, about 16 GB RAM, PostgreSQL and Redis in Docker, and the API in development mode. It is a controlled benchmark, not a claim about production capacity.</p></div></div></section>
-<section class="case-section wrap two-columns"><div><p class="eyebrow">TAKEAWAY</p><h2>Correctness first.<br>Then make it faster.</h2><p class="prose">The most useful part of this project is the connection between security rules, data modeling, and performance evidence. An interface can make permissions visible; the system still has to enforce them consistently at the point of access.</p></div><aside class="source-note"><h3>Project evidence</h3><p class="prose">Based on the TriageFlow repository README and performance documentation, including the May 27, 2026 index follow-up, and my résumé. Source code is currently private.</p><p class="prose">This diagram summarizes the architecture; it is not an application screenshot.</p></aside></section><section class="case-end wrap"><a href="resume.html#triageflow">See this project on my résumé ↗</a><a href="mgvc.html">Next case study: MGVC Decoder →</a></section><section class="wrap case-section"><a class="inklink" href="https://github.com/Zachgille/triageflow">View source on GitHub</a></section></main><footer class="site-footer"><div><a class="footer-name" href="index.html">Zach Gillespie<span class="accent">.</span></a><p>Computer Science · University of Michigan · December 2026</p></div><div class="footer-links"><a href="mailto:zachgill@umich.edu">Email ↗</a><a href="https://github.com/Zachgille">GitHub ↗</a><a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn ↗</a></div></footer></body></html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TriageFlow, a multi-tenant support desk · Zach Gillespie</title>
+<meta name="description" content="Tenant isolation enforced in the backend and the schema, tests that try to break it, and the composite index that fixed the slowest queue.">
+<meta name="theme-color" content="#f3f2ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121214" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preload" href="fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site.css">
+<meta property="og:title" content="TriageFlow, a multi-tenant support desk">
+<meta property="og:image" content="https://zachgille.github.io/portfolio/og.png">
+<script src="site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="top__name" href="./">Zach Gillespie</a>
+    <nav aria-label="Site">
+      <a href="./#work">Work</a>
+      <a href="games.html">Games</a>
+      <a href="resume.html">Résumé</a>
+      <a href="mailto:zachgill@umich.edu">Email</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="cs wrap">
+  <p class="crumb"><a href="./#work">← All work</a></p>
+
+  <header class="cs__head">
+    <h1>TriageFlow</h1>
+    <p class="cs__dek">A support desk for many companies at once: tickets, customer replies, internal notes, assignments, SLA checks and audit logs. Every company’s data sits in the same PostgreSQL tables, and none of it is visible to the others.</p>
+    <dl class="cs__meta">
+      <div><dt>Stack</dt><dd>TypeScript, Next.js, NestJS on Fastify, PostgreSQL, Prisma, Redis, BullMQ, Clerk</dd></div>
+      <div><dt>Testing</dt><dd>Integration tests against live PostgreSQL, k6 load tests</dd></div>
+      <div><dt>Source</dt><dd><a href="https://github.com/Zachgille/triageflow">github.com/Zachgille/triageflow</a></dd></div>
+    </dl>
+  </header>
+
+  <figure class="cs__media">
+    <video src="assets/triageflow-triageticket.mp4" poster="assets/triageflow-triageticket-poster.webp" width="1140" height="582" autoplay muted loop playsinline aria-label="Screen recording: an agent opens the ticket ‘Production login errors’, moves it to Open and assigns it."></video>
+    <figcaption>Triaging a ticket in the running app.</figcaption>
+  </figure>
+
+  <section class="cs__section">
+    <h2>One database, many tenants</h2>
+    <p>TriageFlow uses pooled tenancy: every tenant’s rows live in shared tables and carry a <code>tenant_id</code>. It’s the cheapest way to run many tenants and the easiest to get wrong, because one query that forgets its tenant filter leaks another company’s tickets. That tradeoff is the project’s first decision record, along with the options I passed on, a database or a schema per tenant.</p>
+    <p>So isolation can’t depend on remembering a <code>WHERE</code> clause:</p>
+    <ul>
+      <li>Every repository method takes a <code>RequestContext</code> holding the request ID, user, tenant, membership and resolved permissions. Controllers never call Prisma directly.</li>
+      <li>Relations between tenant-owned rows use composite foreign keys that include <code>tenant_id</code>, so the database itself rejects a ticket whose requester or assignee belongs to another tenant.</li>
+      <li>Clerk handles sign-in and nothing else. Roles and permissions live in TriageFlow’s own tables, and every protected endpoint checks them. The interface hides controls you can’t use, but the API is what enforces it.</li>
+    </ul>
+    <figure class="cs__media">
+      <video src="assets/triageflow-internalnote.mp4" poster="assets/triageflow-internalnote-poster.webp" width="1140" height="872" autoplay muted loop playsinline preload="none" aria-label="Screen recording: an agent adds an internal note to a ticket, then writes a public reply."></video>
+      <figcaption>Replies are public or internal. Internal notes are only returned to members whose role allows it.</figcaption>
+    </figure>
+  </section>
+
+  <section class="cs__section">
+    <h2>Tests that try to break it</h2>
+    <p>The integration suite runs against a real PostgreSQL database with a test auth provider, and most of it attempts things that should fail. Some of the test names:</p>
+    <ul class="testlist">
+      <li>prevents a Tenant A user from listing Tenant B tickets</li>
+      <li>does not read or comment on another tenant ticket through Tenant A context</li>
+      <li>does not let Tenant A privileges grant Tenant B mutations</li>
+      <li>rejects cross-tenant requester and assignee references</li>
+      <li>allows viewers to read tickets but not mutate them</li>
+      <li>does not create ticket or audit rows when SLA policy lookup fails</li>
+    </ul>
+    <p class="note">From <a href="https://github.com/Zachgille/triageflow/blob/main/apps/api/src/integration/api.live.integration-spec.ts"><code>api.live.integration-spec.ts</code></a>, which also covers cursor pagination, internal-note filtering and transactional audit logs.</p>
+  </section>
+
+  <section class="cs__section">
+    <h2>Finding the slow query</h2>
+    <p>I seeded one large tenant with 50,000 tickets and 250,000 comments and pointed k6 at the API: 20 virtual users for five minutes. The default ticket queue, unfiltered and newest first, was the slowest list endpoint, with a p95 of 42 ms, about twice the filtered queues.</p>
+    <p><code>EXPLAIN ANALYZE</code> showed why. The queues filtered by status, priority or assignee already had tenant-scoped indexes. The default queue didn’t, so PostgreSQL read the whole tickets table, threw away the other tenant’s rows and sorted what was left.</p>
+    <p>The fix was one index whose columns match the query: tenant first, then the same ordering that cursor pagination uses.</p>
+    <figure class="codeblock">
+<pre><code><span class="k">CREATE INDEX</span> "tickets_tenant_id_created_at_id_desc_idx"
+  <span class="k">ON</span> "tickets" ("tenant_id", "created_at" <span class="k">DESC</span>, "id" <span class="k">DESC</span>);</code></pre>
+    </figure>
+    <figure class="fig" data-toggle>
+      <div class="fig__plate plan">
+        <div class="toggle" role="group" aria-label="Query plan">
+          <button type="button" data-show="before" aria-pressed="false">Before</button>
+          <button type="button" data-show="after" aria-pressed="true">After</button>
+        </div>
+        <div class="plan__block" data-panel="before" hidden>
+          <p class="plan__head"><span>Sequential scan, then a sort</span><span class="num">13.591 ms</span></p>
+<pre><mark>Seq Scan on tickets</mark> ... rows=25000
+Rows Removed by Filter: 25003
+<mark>Sort Method: top-N heapsort</mark>
+Execution Time: 13.591 ms</pre>
+        </div>
+        <div class="plan__block is-after" data-panel="after">
+          <p class="plan__head"><span>Index scan, already in order</span><span class="num">0.142 ms</span></p>
+<pre><mark>Index Scan using tickets_<wbr>tenant_<wbr>id_<wbr>created_<wbr>at_<wbr>id_<wbr>desc_<wbr>idx</mark> on tickets
+Index Cond: tenant_id = bench-large
+Execution Time: 0.142 ms</pre>
+        </div>
+      </div>
+      <figcaption>First page of the default queue for the large tenant. The second page, read with a cursor, went from 14.208 ms to 0.084 ms.</figcaption>
+    </figure>
+    <div class="table-wrap">
+      <table>
+        <caption>p95 latency under k6, 20 virtual users for five minutes. The filtered queues already had indexes and didn’t change.</caption>
+        <thead><tr><th scope="col">Endpoint</th><th scope="col" class="num">Before</th><th scope="col" class="num">After</th></tr></thead>
+        <tbody>
+          <tr class="is-hot"><td>Ticket queue</td><td class="num">42.00 ms</td><td class="num after">17.59 ms</td></tr>
+          <tr class="is-hot"><td>Ticket queue, next page</td><td class="num">43.58 ms</td><td class="num after">19.00 ms</td></tr>
+          <tr><td>Filtered by status</td><td class="num">20.42 ms</td><td class="num">19.56 ms</td></tr>
+          <tr><td>Filtered by priority</td><td class="num">19.59 ms</td><td class="num">19.22 ms</td></tr>
+          <tr><td>Filtered by assignee</td><td class="num">20.00 ms</td><td class="num">20.10 ms</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>The index takes some disk and makes every ticket insert slightly more expensive. A support desk reads its queue far more often than it creates tickets, and <code>created_at</code> and <code>id</code> never change after insert, so I kept it.</p>
+    <p class="note">All of this ran on my desktop (Intel i5-9600K, about 16 GB of RAM, PostgreSQL and Redis in Docker, the API in development mode). The absolute numbers say little about production; the before-and-after comparison is the point. The full write-up is in <a href="https://github.com/Zachgille/triageflow/blob/main/docs/benchmarks/2026-05-27-index-optimization.md"><code>docs/benchmarks</code></a>.</p>
+  </section>
+
+  <section class="cs__section">
+    <h2>Background work</h2>
+    <p>SLA breach checks and analytics rollups run in a separate worker process on Redis and BullMQ. Jobs get retried, so they have to be safe to run twice: unique constraints in the database mean a retried breach check can’t record the same breach twice. Workers go through the same tenant-scoped repositories as the API.</p>
+  </section>
+
+  <section class="cs__section">
+    <h2>Decisions, written down</h2>
+    <ol class="adr">
+      <li><span class="num">0001</span><div><b><a href="https://github.com/Zachgille/triageflow/blob/main/docs/decisions/0001-pooled-tenancy.md">Pooled tenancy</a></b><span>Shared tables with a tenant on every row, rather than a database or schema per tenant.</span></div></li>
+      <li><span class="num">0002</span><div><b><a href="https://github.com/Zachgille/triageflow/blob/main/docs/decisions/0002-modular-monolith.md">Modular monolith</a></b><span>One codebase and one database plus a worker process, instead of services that would need distributed transactions.</span></div></li>
+      <li><span class="num">0003</span><div><b><a href="https://github.com/Zachgille/triageflow/blob/main/docs/decisions/0003-redis-workers.md">Redis workers</a></b><span>BullMQ for scheduled and retried jobs, which must be idempotent.</span></div></li>
+      <li><span class="num">0004</span><div><b><a href="https://github.com/Zachgille/triageflow/blob/main/docs/decisions/0004-tenant-scoped-repositories.md">Tenant-scoped repositories</a></b><span>Every repository method takes a <code>RequestContext</code>; controllers never touch Prisma.</span></div></li>
+      <li><span class="num">0005</span><div><b><a href="https://github.com/Zachgille/triageflow/blob/main/docs/decisions/0005-postgres-indexing.md">PostgreSQL indexing</a></b><span>Indexes follow documented access patterns and are justified with query plans.</span></div></li>
+      <li><span class="num">0006</span><div><b><a href="https://github.com/Zachgille/triageflow/blob/main/docs/decisions/0006-clerk-auth-application-rbac.md">Clerk for auth, RBAC in the app</a></b><span>Identity comes from Clerk; roles and permissions stay in TriageFlow’s database.</span></div></li>
+    </ol>
+  </section>
+
+  <nav class="next" aria-label="Next case study">
+    <span>Next</span>
+    <a href="mgvc.html">MGVC decoder</a>
+  </nav>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>Zach Gillespie · Ann Arbor, Michigan</span>
+    <nav aria-label="Elsewhere">
+      <a href="mailto:zachgill@umich.edu">zachgill@umich.edu</a>
+      <a href="https://github.com/Zachgille">GitHub</a>
+      <a href="https://www.linkedin.com/in/zach-gillespie/">LinkedIn</a>
+      <a href="Zach-Gillespie-Resume.pdf">Résumé PDF</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
