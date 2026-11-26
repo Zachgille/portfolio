@@ -48,6 +48,45 @@
   </figure>
 
   <section class="cs__section">
+    <h2>The pieces</h2>
+    <p>A Next.js front end, a NestJS API that owns every business rule and authorization check, PostgreSQL for tenant data, and a separate worker for scheduled jobs. Clerk only handles sign-in.</p>
+    <figure class="fig">
+      <div class="fig__plate diagram">
+        <svg viewBox="0 0 955 300" role="img" aria-labelledby="arch-title">
+          <title id="arch-title">A support agent's browser uses the Next.js web app, which signs in through Clerk and calls the NestJS API with a bearer token. The API reads and writes scoped data in PostgreSQL. A separate worker process schedules jobs on Redis and BullMQ and writes results to PostgreSQL.</title>
+          <defs>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" class="d-head"/></marker>
+          </defs>
+          <g class="d-edges" marker-end="url(#arrow)">
+            <path d="M180 80H262"/>
+            <path d="M435 80H517"/>
+            <path d="M690 80H772"/>
+            <path d="M350 214V119"/>
+            <path d="M690 250H772"/>
+            <path d="M650 214 808 119"/>
+          </g>
+          <g class="d-label">
+            <text x="222.5" y="30" text-anchor="middle">uses</text>
+            <text x="477.5" y="30" text-anchor="middle">Bearer /api</text>
+            <text x="732.5" y="30" text-anchor="middle">scoped data</text>
+            <text x="361" y="170">sign-in + token</text>
+            <text x="732.5" y="240" text-anchor="middle">job queue</text>
+            <text x="742" y="172">results</text>
+          </g>
+          <g class="d-node"><rect x="10" y="44" width="170" height="72" rx="4"/><text x="95" y="76" text-anchor="middle"><tspan class="d-t">Support agent</tspan><tspan x="95" dy="19" class="d-s">in a browser</tspan></text></g>
+          <g class="d-node"><rect x="265" y="44" width="170" height="72" rx="4"/><text x="350" y="76" text-anchor="middle"><tspan class="d-t">Next.js web</tspan><tspan x="350" dy="19" class="d-s">UI, /api rewrite</tspan></text></g>
+          <g class="d-node"><rect x="520" y="44" width="170" height="72" rx="4"/><text x="605" y="67" text-anchor="middle"><tspan class="d-t">NestJS API</tspan><tspan x="605" dy="19" class="d-s">auth + tenant RBAC</tspan><tspan x="605" dy="17" class="d-s">support modules</tspan></text></g>
+          <g class="d-node is-data"><rect x="775" y="44" width="170" height="72" rx="4"/><text x="860" y="76" text-anchor="middle"><tspan class="d-t">PostgreSQL</tspan><tspan x="860" dy="19" class="d-s">pooled tenant data</tspan></text></g>
+          <g class="d-node"><rect x="265" y="214" width="170" height="72" rx="4"/><text x="350" y="246" text-anchor="middle"><tspan class="d-t">Clerk</tspan><tspan x="350" dy="19" class="d-s">identity provider</tspan></text></g>
+          <g class="d-node"><rect x="520" y="214" width="170" height="72" rx="4"/><text x="605" y="246" text-anchor="middle"><tspan class="d-t">Worker process</tspan><tspan x="605" dy="19" class="d-s">SLA checks + rollups</tspan></text></g>
+          <g class="d-node is-data"><rect x="775" y="214" width="170" height="72" rx="4"/><text x="860" y="246" text-anchor="middle"><tspan class="d-t">Redis / BullMQ</tspan><tspan x="860" dy="19" class="d-s">scheduled jobs</tspan></text></g>
+        </svg>
+      </div>
+      <figcaption>Redrawn from the <a href="https://github.com/Zachgille/triageflow/blob/main/docs/assets/TriageFlow_System_Overview.png">system overview</a> in the repository. The worker schedules its own jobs; the API doesn’t enqueue them.</figcaption>
+    </figure>
+  </section>
+
+  <section class="cs__section">
     <h2>One database, many tenants</h2>
     <p>TriageFlow uses pooled tenancy: every tenant’s rows live in shared tables and carry a <code>tenant_id</code>. It’s the cheapest way to run many tenants and the easiest to get wrong, because one query that forgets its tenant filter leaks another company’s tickets. That tradeoff is the project’s first decision record, along with the options I passed on, a database or a schema per tenant.</p>
     <p>So isolation can’t depend on remembering a <code>WHERE</code> clause:</p>
